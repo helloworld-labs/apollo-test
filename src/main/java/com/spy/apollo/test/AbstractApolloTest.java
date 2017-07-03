@@ -3,10 +3,11 @@ package com.spy.apollo.test;
 import com.alibaba.fastjson.JSON;
 import com.spy.apollo.test.util.TestProgress;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.rules.TestRule;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 
 
 /**
@@ -24,8 +25,12 @@ public abstract class AbstractApolloTest {
     @Rule
     public TestRule testProgress = new TestProgress();
 
+//    @Autowired
+//    protected ApplicationContext ctx;
+
     @Autowired
-    protected ApplicationContext ctx;
+    protected AbstractApplicationContext ctx;
+
 
     /**
      * 输出内容
@@ -34,5 +39,13 @@ public abstract class AbstractApolloTest {
      */
     protected void print(Object obj) {
         log.debug("obj={}", JSON.toJSONString(obj, true));
+    }
+
+
+    @After
+    protected void destroy() {
+        if (ctx != null) {
+            ctx.registerShutdownHook();
+        }
     }
 }
