@@ -43,7 +43,7 @@ public abstract class AbstractApolloTest {
 
 
     @After
-    protected void destroy() {
+    public void destroy() {
         if (ctx != null) {
             ctx.registerShutdownHook();
         }
